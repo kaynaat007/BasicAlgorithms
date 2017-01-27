@@ -1,11 +1,15 @@
-#include<stdio.h>
-#include<stdlib.h>
+#ifndef __GRAPH_H_INCLUDED__   // if x.h hasn't been included yet...
+#define __GRAPH_H_INCLUDED__
+
+#include <stdio.h>
+#include <stdlib.h>
 #define R 100
 #define C 100
 
 struct node {
 
 	int dest;
+	int weight;
 	struct node * next;
 
 };
@@ -20,11 +24,12 @@ struct graph {
     struct adjList * array;
 };
 
-struct node *  newAdjListNode( int dest ) {
+struct node *  newAdjListNode( int dest, int weight ) {
 
 	struct node * new_node = ( struct node * ) malloc( sizeof( struct node) );  // make a new node 
 	new_node -> dest = dest;
 	new_node -> next = NULL;
+	new_node -> weight = weight;
 	return new_node;
 
 }
@@ -42,9 +47,11 @@ struct graph * make_graph ( int v ) {
 
 }
 
-void addEdge ( struct graph * g, int src, int dest ) {
+void addEdge ( struct graph * g, int src, int dest, int weight = 0) {
         // edge  from src to dest 
-	struct node * n =  newAdjListNode( dest );
+        //printf ("adding weight %d", weight);
+
+	struct node * n =  newAdjListNode(dest, weight);
 	n -> next = g -> array[src].head;
 	g -> array[src].head = n;
 
@@ -63,7 +70,7 @@ void printGraph ( struct graph * g ) {
 	   printf ( "Adjacent list for this vertex %d ---> ", v );
 	   while ( crawl ) {
 
-		   printf ( "%d   ", crawl -> dest );
+		   printf ( "%d (%d)   ", crawl -> dest, crawl->weight);
 		   crawl = crawl -> next ;
 
 	   }
@@ -86,3 +93,4 @@ void freemem( struct graph * g ) {
 }
 
 
+#endif

@@ -1,6 +1,6 @@
 #include <cstdio>
 #include <iostream>
-#include<climits>
+#include <climits>
 
 using namespace std;
 
@@ -126,13 +126,25 @@ void printHeap( int arr[], int n ) {
    printf ( "\n" );
 }
 
-void delete_min(int arr[], int *n) {
+int delete_min(int arr[], int *n) {
 
 	if ( n  < 0 )
-		return; 
+		return INT_MAX ; 
+	int element = arr[0];
+
 	swap (arr, 0, (*n)-1);
 	*n = *n - 1; 
 	heapify(arr, 0, *n);
+
+	return element;
+}
+
+void insert ( int arr[], int element, int * n ) {
+          
+	  int last_index = *n;
+          *n = *n + 1;
+	  arr[last_index] = INT_MAX;
+	  decrease_key(arr, last_index, *n, element);
 }
 
 int main() {
@@ -150,7 +162,7 @@ int main() {
 		scanf("%d", &arr[i]);
 
 	build_heap( arr, n );
-	printHeap( arr, n );
+	printHeap( arr, n);
        
 	delete_min(arr, &n);
 	printHeap(arr, n);
@@ -160,6 +172,19 @@ int main() {
 
 	delete_min(arr, &n);
 	printHeap(arr, n);
+        
+	printf ("Insert begins\n");
+
+	insert(arr, 5, &n);
+	printHeap(arr, n);
+
+	insert(arr, 4, &n);
+	printHeap(arr, n);
+
+	insert(arr, 2, &n);
+	printHeap(arr, n);
+
+
 
         /* 
 	scanf ( "%d", &y);
